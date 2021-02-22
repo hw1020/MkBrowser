@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -217,7 +218,25 @@ public class WebActivity extends AppCompatActivity implements View.OnClickListen
         intentFilter.addAction(DownloadManager.ACTION_DOWNLOAD_COMPLETE);
         registerReceiver(receiver, intentFilter);
         // 加载首页
-        webView.loadUrl(getResources().getString(R.string.home_url));
+        String lastUrl = getPropertise("getPropertise", mContext, getResources().getString(R.string.home_url));
+        webView.loadUrl(lastUrl);
+    }
+
+    public static String getPropertise(String name, Context context, String defaultValue)
+    {
+        SharedPreferences prefreance = context.getSharedPreferences("config", Context.MODE_APPEND);
+        String aesResult = prefreance.getString("", defaultValue);
+        String result = AES.decrypt(aesResult);
+        return result;
+    }
+
+    public static void setPropertise(String name, String value, Context context)
+    {
+        SharedPreferences prefreance = context.getSharedPreferences("config", Context.MODE_APPEND);
+        SharedPreferences.Editor edit = prefreance.edit();
+        String aesUrl = AES.encrypt(value);
+        edit.putString(name, aesUrl);
+        edit.commit();
     }
 
 
@@ -302,6 +321,13 @@ public class WebActivity extends AppCompatActivity implements View.OnClickListen
             if (url.startsWith(HTTP) || url.startsWith(HTTPS))
             {
                 view.loadUrl(url);
+                try
+                {
+                    setPropertise("lastUrl", url);
+                } catch (Exception e)
+                {
+
+                }
                 return true;
             }
 
