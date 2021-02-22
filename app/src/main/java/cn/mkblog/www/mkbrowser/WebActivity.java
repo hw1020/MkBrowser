@@ -219,15 +219,22 @@ public class WebActivity extends AppCompatActivity implements View.OnClickListen
         registerReceiver(receiver, intentFilter);
         // 加载首页
         String lastUrl = getPropertise("lastUrl", mContext, getResources().getString(R.string.home_url));
+        //toast(lastUrl, mContext);
         webView.loadUrl(lastUrl);
+    }
+
+    public static void toast(String tip, Context context)
+    {
+        Toast toast = Toast.makeText(context.getApplicationContext(), tip, Toast.LENGTH_SHORT);
+        toast.show();
     }
 
     public static String getPropertise(String name, Context context, String defaultValue)
     {
-        @SuppressLint("WrongConstant") SharedPreferences prefreance = context.getSharedPreferences("config", Context.MODE_APPEND);
-        String aesResult = prefreance.getString("", defaultValue);
+        @SuppressLint("WrongConstant") SharedPreferences prefreance = context.getSharedPreferences("config", Context.MODE_PRIVATE);
+        String aesResult = prefreance.getString(name, defaultValue);
         String result = AES.decrypt(aesResult);
-        return result;
+        return aesResult;
     }
 
     public static void setPropertise(String name, String value, Context context)
@@ -235,7 +242,7 @@ public class WebActivity extends AppCompatActivity implements View.OnClickListen
         @SuppressLint("WrongConstant") SharedPreferences prefreance = context.getSharedPreferences("config", Context.MODE_APPEND);
         SharedPreferences.Editor edit = prefreance.edit();
         String aesUrl = AES.encrypt(value);
-        edit.putString(name, aesUrl);
+        edit.putString(name, value);
         edit.commit();
     }
 
