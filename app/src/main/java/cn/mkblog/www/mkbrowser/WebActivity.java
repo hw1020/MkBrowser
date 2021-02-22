@@ -218,7 +218,7 @@ public class WebActivity extends AppCompatActivity implements View.OnClickListen
         intentFilter.addAction(DownloadManager.ACTION_DOWNLOAD_COMPLETE);
         registerReceiver(receiver, intentFilter);
         // 加载首页
-        String lastUrl = getPropertise("getPropertise", mContext, getResources().getString(R.string.home_url));
+        String lastUrl = getPropertise("lastUrl", mContext, getResources().getString(R.string.home_url));
         webView.loadUrl(lastUrl);
     }
 
