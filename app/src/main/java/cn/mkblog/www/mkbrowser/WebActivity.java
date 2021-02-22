@@ -224,7 +224,7 @@ public class WebActivity extends AppCompatActivity implements View.OnClickListen
 
     public static String getPropertise(String name, Context context, String defaultValue)
     {
-        SharedPreferences prefreance = context.getSharedPreferences("config", Context.MODE_APPEND);
+        @SuppressLint("WrongConstant") SharedPreferences prefreance = context.getSharedPreferences("config", Context.MODE_APPEND);
         String aesResult = prefreance.getString("", defaultValue);
         String result = AES.decrypt(aesResult);
         return result;
@@ -232,7 +232,7 @@ public class WebActivity extends AppCompatActivity implements View.OnClickListen
 
     public static void setPropertise(String name, String value, Context context)
     {
-        SharedPreferences prefreance = context.getSharedPreferences("config", Context.MODE_APPEND);
+        @SuppressLint("WrongConstant") SharedPreferences prefreance = context.getSharedPreferences("config", Context.MODE_APPEND);
         SharedPreferences.Editor edit = prefreance.edit();
         String aesUrl = AES.encrypt(value);
         edit.putString(name, aesUrl);
@@ -323,7 +323,7 @@ public class WebActivity extends AppCompatActivity implements View.OnClickListen
                 view.loadUrl(url);
                 try
                 {
-                    setPropertise("lastUrl", url);
+                    setPropertise("lastUrl", url, mContext);
                 } catch (Exception e)
                 {
 
