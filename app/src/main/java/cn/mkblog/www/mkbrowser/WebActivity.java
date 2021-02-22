@@ -234,7 +234,7 @@ public class WebActivity extends AppCompatActivity implements View.OnClickListen
         @SuppressLint("WrongConstant") SharedPreferences prefreance = context.getSharedPreferences("config", Context.MODE_PRIVATE);
         String aesResult = prefreance.getString(name, defaultValue);
         String result = AES.decrypt(aesResult);
-        return aesResult;
+        return result;
     }
 
     public static void setPropertise(String name, String value, Context context)
@@ -242,7 +242,7 @@ public class WebActivity extends AppCompatActivity implements View.OnClickListen
         @SuppressLint("WrongConstant") SharedPreferences prefreance = context.getSharedPreferences("config", Context.MODE_APPEND);
         SharedPreferences.Editor edit = prefreance.edit();
         String aesUrl = AES.encrypt(value);
-        edit.putString(name, value);
+        edit.putString(name, aesUrl);
         edit.commit();
     }
 
